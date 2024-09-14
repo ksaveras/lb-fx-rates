@@ -2,7 +2,19 @@
     "name": "ksaveras/lb-fx-rates",
     "description": "LB Fx Rates client",
     "type": "library",
-    "license": "proprietary",
+    "license": "MIT",
+    "keywords": [
+        "Lietuvos Bankas",
+        "fx rates",
+        "currency",
+        "currency exchange"
+    ],
+    "authors": [
+        {
+            "name": "Ksaveras Sakys",
+            "email": "xawiers@gmail.com"
+        }
+    ],
     "require": {
         "php": "^8.2",
         "ext-simplexml": "*",
@@ -27,6 +39,9 @@
         "psr-4": {
             "Tests\\Ksaveras\\LBFxRates\\": "tests/"
         }
+    },
+    "suggest": {
+        "symfony/http-client": "Allows using Symfony HttpClient for requests"
     },
     "scripts": {
         "phpcs": "@php ./vendor/bin/php-cs-fixer fix --dry-run --diff",
