@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FxRates xmlns="http://www.lb.lt/WebServices/FxRates">
+    <FxRate>
+        <Tp>EU</Tp>
+        <Dt>2024-08-31</Dt>
+        <CcyAmt>
+            <Ccy>EUR</Ccy>
+            <Amt>1</Amt>
+        </CcyAmt>
+        <CcyAmt>
+            <Ccy>AUD</Ccy>
+            <Amt>1.6497</Amt>
+        </CcyAmt>
+    </FxRate>
+</FxRates>

@@ -1,0 +1,51 @@
+{
+    "name": "ksaveras/lb-fx-rates",
+    "description": "LB Fx Rates client",
+    "type": "library",
+    "license": "proprietary",
+    "require": {
+        "php": "^8.2",
+        "ext-simplexml": "*",
+        "psr/http-client": "^1.0",
+        "psr/http-factory": "^1.1"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.64",
+        "nyholm/psr7": "^1.8",
+        "phpstan/phpstan": "^1.12",
+        "phpstan/phpstan-phpunit": "^1.4",
+        "phpunit/phpunit": "^11.3",
+        "rector/rector": "^1.2",
+        "symfony/http-client": "^7.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ksaveras\\LBFxRates\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\Ksaveras\\LBFxRates\\": "tests/"
+        }
+    },
+    "scripts": {
+        "phpcs": "@php ./vendor/bin/php-cs-fixer fix --dry-run --diff",
+        "phpcs:fix": "@php ./vendor/bin/php-cs-fixer fix",
+        "phpstan": "@php ./vendor/bin/phpstan analyse",
+        "rector": "@php ./vendor/bin/rector process --dry-run",
+        "rector:fix": "@php ./vendor/bin/rector process",
+        "test": "@php ./vendor/bin/phpunit",
+        "test:coverage": "@php ./vendor/bin/phpunit --coverage-clover=coverage/clover.xml",
+        "static-analysis": [
+            "@phpcs",
+            "@phpstan",
+            "@rector"
+        ]
+    },
+    "config": {
+        "sort-packages": true,
+        "platform": {
+            "php": "8.2.99"
+        }
+    }
+}
