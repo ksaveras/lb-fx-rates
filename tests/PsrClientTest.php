@@ -16,12 +16,15 @@ use Ksaveras\LBFxRates\Model\Currency;
 use Ksaveras\LBFxRates\Model\ExchangeRateType;
 use Ksaveras\LBFxRates\Model\FxRate;
 use Ksaveras\LBFxRates\PsrClient;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Psr18Client;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Component\HttpClient\TraceableHttpClient;
 
+#[CoversClass(PsrClient::class)]
 final class PsrClientTest extends TestCase
 {
     private PsrClient $sut;
@@ -30,6 +33,7 @@ final class PsrClientTest extends TestCase
 
     private TraceableHttpClient $traceableClient;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -46,14 +50,21 @@ final class PsrClientTest extends TestCase
         );
     }
 
-    public function testItReturnsCurrentFxRates(): void
+    #[Test]
+    public function itReturnsCurrentFxRates(): void
     {
         if (false === $responseContent = file_get_contents(__DIR__.'/data/FxRates.xml')) {
             self::fail('Failed to load response content.');
         }
 
         $this->mockClient->setResponseFactory([
-            new MockResponse($responseContent),
+            static function ($method, $url, $options) use ($responseContent) {
+                $requestBody = \is_callable($options['body']) ? $options['body'](1024) : $options['body'];
+
+                self::assertSame('tp=EU', $requestBody);
+
+                return new MockResponse($responseContent);
+            },
         ]);
 
         $result = $this->sut->currentFxRates();
@@ -64,7 +75,6 @@ final class PsrClientTest extends TestCase
 
         self::assertSame('POST', $tracedRequest['method']);
         self::assertSame('https://www.lb.lt/webservices/fxrates/FxRates.asmx/getCurrentFxRates', $tracedRequest['url']);
-        self::assertSame('tp=EU', $tracedRequest['options']['body']);
         self::assertSame(['application/x-www-form-urlencoded'], $tracedRequest['options']['headers']['Content-Type']);
 
         self::assertCount(86, $result);
@@ -84,7 +94,13 @@ final class PsrClientTest extends TestCase
         }
 
         $this->mockClient->setResponseFactory([
-            new MockResponse($responseContent),
+            static function ($method, $url, $options) use ($responseContent) {
+                $requestBody = \is_callable($options['body']) ? $options['body'](1024) : $options['body'];
+
+                self::assertSame('tp=EU&dt=2024-08-31', $requestBody);
+
+                return new MockResponse($responseContent);
+            },
         ]);
 
         $result = $this->sut->fxRates(new \DateTimeImmutable('2024-08-31'));
@@ -95,7 +111,6 @@ final class PsrClientTest extends TestCase
 
         self::assertSame('POST', $tracedRequest['method']);
         self::assertSame('https://www.lb.lt/webservices/fxrates/FxRates.asmx/getFxRates', $tracedRequest['url']);
-        self::assertSame('tp=EU&dt=2024-08-31', $tracedRequest['options']['body']);
         self::assertSame(['application/x-www-form-urlencoded'], $tracedRequest['options']['headers']['Content-Type']);
 
         self::assertCount(86, $result);
@@ -115,7 +130,13 @@ final class PsrClientTest extends TestCase
         }
 
         $this->mockClient->setResponseFactory([
-            new MockResponse($responseContent),
+            static function ($method, $url, $options) use ($responseContent) {
+                $requestBody = \is_callable($options['body']) ? $options['body'](1024) : $options['body'];
+
+                self::assertSame('tp=EU&ccy=AUD&dtFrom=2024-08-31&dtTo=2024-08-31', $requestBody);
+
+                return new MockResponse($responseContent);
+            },
         ]);
 
         $result = $this->sut->fxRatesForCurrency(
@@ -130,7 +151,6 @@ final class PsrClientTest extends TestCase
 
         self::assertSame('POST', $tracedRequest['method']);
         self::assertSame('https://www.lb.lt/webservices/fxrates/FxRates.asmx/getFxRatesForCurrency', $tracedRequest['url']);
-        self::assertSame('tp=EU&ccy=AUD&dtFrom=2024-08-31&dtTo=2024-08-31', $tracedRequest['options']['body']);
         self::assertSame(['application/x-www-form-urlencoded'], $tracedRequest['options']['headers']['Content-Type']);
 
         self::assertCount(1, $result);
