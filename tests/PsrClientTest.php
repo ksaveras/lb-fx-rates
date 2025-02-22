@@ -14,7 +14,6 @@ namespace Tests\Ksaveras\LBFxRates;
 use Ksaveras\LBFxRates\Exception\UnexpectedResponseCodeException;
 use Ksaveras\LBFxRates\Model\Currency;
 use Ksaveras\LBFxRates\Model\ExchangeRateType;
-use Ksaveras\LBFxRates\Model\FxRate;
 use Ksaveras\LBFxRates\PsrClient;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
@@ -24,6 +23,13 @@ use Symfony\Component\HttpClient\Psr18Client;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Component\HttpClient\TraceableHttpClient;
 
+/**
+ * @phpstan-type TracedRequestShape array{
+ *     method: string,
+ *     url: string,
+ *     options: array{headers: array{Content-Type: array{string}}},
+ * }
+ */
 #[CoversClass(PsrClient::class)]
 final class PsrClientTest extends TestCase
 {
@@ -58,7 +64,8 @@ final class PsrClientTest extends TestCase
         }
 
         $this->mockClient->setResponseFactory([
-            static function ($method, $url, $options) use ($responseContent) {
+            static function (string $method, string $url, array $options) use ($responseContent): MockResponse {
+                /** @var array{body: string|callable(int):string} $options */
                 $requestBody = \is_callable($options['body']) ? $options['body'](1024) : $options['body'];
 
                 self::assertSame('tp=EU', $requestBody);
@@ -71,6 +78,7 @@ final class PsrClientTest extends TestCase
 
         self::assertSame(1, $this->mockClient->getRequestsCount());
 
+        /** @var TracedRequestShape $tracedRequest */
         $tracedRequest = $this->traceableClient->getTracedRequests()[0];
 
         self::assertSame('POST', $tracedRequest['method']);
@@ -80,7 +88,6 @@ final class PsrClientTest extends TestCase
         self::assertCount(86, $result);
 
         foreach ($result as $fxRate) {
-            self::assertInstanceOf(FxRate::class, $fxRate);
             self::assertSame(ExchangeRateType::EU, $fxRate->exchangeRateType());
             self::assertSame(Currency::EUR, $fxRate->currencyAmount()->currency());
             self::assertSame(1.0, $fxRate->currencyAmount()->amount());
@@ -94,7 +101,8 @@ final class PsrClientTest extends TestCase
         }
 
         $this->mockClient->setResponseFactory([
-            static function ($method, $url, $options) use ($responseContent) {
+            static function (string $method, string $url, array $options) use ($responseContent): MockResponse {
+                /** @var array{body: string|callable(int):string} $options */
                 $requestBody = \is_callable($options['body']) ? $options['body'](1024) : $options['body'];
 
                 self::assertSame('tp=EU&dt=2024-08-31', $requestBody);
@@ -107,6 +115,7 @@ final class PsrClientTest extends TestCase
 
         self::assertSame(1, $this->mockClient->getRequestsCount());
 
+        /** @var TracedRequestShape $tracedRequest */
         $tracedRequest = $this->traceableClient->getTracedRequests()[0];
 
         self::assertSame('POST', $tracedRequest['method']);
@@ -116,7 +125,6 @@ final class PsrClientTest extends TestCase
         self::assertCount(86, $result);
 
         foreach ($result as $fxRate) {
-            self::assertInstanceOf(FxRate::class, $fxRate);
             self::assertSame(ExchangeRateType::EU, $fxRate->exchangeRateType());
             self::assertSame(Currency::EUR, $fxRate->currencyAmount()->currency());
             self::assertSame(1.0, $fxRate->currencyAmount()->amount());
@@ -130,7 +138,8 @@ final class PsrClientTest extends TestCase
         }
 
         $this->mockClient->setResponseFactory([
-            static function ($method, $url, $options) use ($responseContent) {
+            static function (string $method, string $url, array $options) use ($responseContent): MockResponse {
+                /** @var array{body: string|callable(int):string} $options */
                 $requestBody = \is_callable($options['body']) ? $options['body'](1024) : $options['body'];
 
                 self::assertSame('tp=EU&ccy=AUD&dtFrom=2024-08-31&dtTo=2024-08-31', $requestBody);
@@ -147,6 +156,7 @@ final class PsrClientTest extends TestCase
 
         self::assertSame(1, $this->mockClient->getRequestsCount());
 
+        /** @var TracedRequestShape $tracedRequest */
         $tracedRequest = $this->traceableClient->getTracedRequests()[0];
 
         self::assertSame('POST', $tracedRequest['method']);
@@ -156,7 +166,6 @@ final class PsrClientTest extends TestCase
         self::assertCount(1, $result);
 
         foreach ($result as $fxRate) {
-            self::assertInstanceOf(FxRate::class, $fxRate);
             self::assertSame(ExchangeRateType::EU, $fxRate->exchangeRateType());
             self::assertSame(Currency::EUR, $fxRate->currencyAmount()->currency());
             self::assertSame(1.0, $fxRate->currencyAmount()->amount());
