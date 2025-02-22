@@ -42,7 +42,7 @@ final readonly class PsrClient implements Client
         $response = $this->doSendRequest(
             self::CURRENT_FX_RATES_URL,
             [
-                'tp' => $exchangeRateType?->value ?? ExchangeRateType::EU->value,
+                'tp' => $exchangeRateType->value ?? ExchangeRateType::EU->value,
             ],
         );
 
@@ -58,7 +58,7 @@ final readonly class PsrClient implements Client
         $response = $this->doSendRequest(
             self::FX_RATES_URL,
             [
-                'tp' => $exchangeRateType?->value ?? ExchangeRateType::EU->value,
+                'tp' => $exchangeRateType->value ?? ExchangeRateType::EU->value,
                 'dt' => $date->format('Y-m-d'),
             ],
         );
@@ -70,6 +70,9 @@ final readonly class PsrClient implements Client
         return $this->parseResponse($response);
     }
 
+    /**
+     * @return FxRate[]
+     */
     public function fxRatesForCurrency(
         Currency $currency,
         \DateTimeImmutable $dateFrom,
@@ -79,7 +82,7 @@ final readonly class PsrClient implements Client
         $response = $this->doSendRequest(
             self::FX_RATES_FOR_CURRENCY_URL,
             [
-                'tp' => $exchangeRateType?->value ?? ExchangeRateType::EU->value,
+                'tp' => $exchangeRateType->value ?? ExchangeRateType::EU->value,
                 'ccy' => $currency->value,
                 'dtFrom' => $dateFrom->format('Y-m-d'),
                 'dtTo' => $dateTo->format('Y-m-d'),
@@ -142,7 +145,7 @@ final readonly class PsrClient implements Client
                         $formData,
                         '',
                         '&',
-                        \PHP_QUERY_RFC1738,
+                        \PHP_QUERY_RFC3986,
                     ),
                 ),
             );
