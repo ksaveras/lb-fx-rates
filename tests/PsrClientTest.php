@@ -14,7 +14,6 @@ namespace Tests\Ksaveras\LBFxRates;
 use Ksaveras\LBFxRates\Exception\UnexpectedResponseCodeException;
 use Ksaveras\LBFxRates\Model\Currency;
 use Ksaveras\LBFxRates\Model\ExchangeRateType;
-use Ksaveras\LBFxRates\Model\FxRate;
 use Ksaveras\LBFxRates\PsrClient;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
@@ -65,7 +64,7 @@ final class PsrClientTest extends TestCase
         }
 
         $this->mockClient->setResponseFactory([
-            static function (string $method, string $url, array $options) use ($responseContent) {
+            static function (string $method, string $url, array $options) use ($responseContent): MockResponse {
                 /** @var array{body: string|callable(int):string} $options */
                 $requestBody = \is_callable($options['body']) ? $options['body'](1024) : $options['body'];
 
@@ -102,7 +101,7 @@ final class PsrClientTest extends TestCase
         }
 
         $this->mockClient->setResponseFactory([
-            static function (string $method, string $url, array $options) use ($responseContent) {
+            static function (string $method, string $url, array $options) use ($responseContent): MockResponse {
                 /** @var array{body: string|callable(int):string} $options */
                 $requestBody = \is_callable($options['body']) ? $options['body'](1024) : $options['body'];
 
@@ -139,7 +138,7 @@ final class PsrClientTest extends TestCase
         }
 
         $this->mockClient->setResponseFactory([
-            static function (string $method, string $url, array $options) use ($responseContent) {
+            static function (string $method, string $url, array $options) use ($responseContent): MockResponse {
                 /** @var array{body: string|callable(int):string} $options */
                 $requestBody = \is_callable($options['body']) ? $options['body'](1024) : $options['body'];
 
