@@ -4,11 +4,14 @@
   "automergeStrategy": "squash",
   "extends": [
     "config:recommended",
+    "schedule:weekends",
     ":disableDependencyDashboard",
     ":semanticCommits",
     "group:phpstan",
     "group:symfony",
-    "group:unitTest"
+    "group:unitTest",
+    "preview:dockerCompose",
+    "preview:dockerVersions"
   ],
   "labels": ["dependencies"],
   "platformAutomerge": true

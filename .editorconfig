@@ -9,3 +9,6 @@ trim_trailing_whitespace = true
 
 [*.{yml,yaml,xml}]
 indent_size = 2
+
+[.github/*.json]
+indent_size = 2
