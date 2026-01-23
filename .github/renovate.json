@@ -31,4 +31,5 @@
       "rangeStrategy": "bump",
       "semanticCommitType": "chore"
     }
+  ]
 }
