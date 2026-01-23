@@ -24,11 +24,11 @@ use Psr\Http\Message\StreamFactoryInterface;
 
 final readonly class PsrClient implements Client
 {
-    private const CURRENT_FX_RATES_URL = 'https://www.lb.lt/webservices/fxrates/FxRates.asmx/getCurrentFxRates';
+    private const string CURRENT_FX_RATES_URL = 'https://www.lb.lt/webservices/fxrates/FxRates.asmx/getCurrentFxRates';
 
-    private const FX_RATES_URL = 'https://www.lb.lt/webservices/fxrates/FxRates.asmx/getFxRates';
+    private const string FX_RATES_URL = 'https://www.lb.lt/webservices/fxrates/FxRates.asmx/getFxRates';
 
-    private const FX_RATES_FOR_CURRENCY_URL = 'https://www.lb.lt/webservices/fxrates/FxRates.asmx/getFxRatesForCurrency';
+    private const string FX_RATES_FOR_CURRENCY_URL = 'https://www.lb.lt/webservices/fxrates/FxRates.asmx/getFxRatesForCurrency';
 
     public function __construct(
         private ClientInterface $client,
