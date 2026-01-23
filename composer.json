@@ -18,7 +18,7 @@
     "require": {
         "php": "^8.3",
         "ext-simplexml": "*",
-        "psr/http-client": "^1.0",
+        "psr/http-client": "^1.0.3",
         "psr/http-factory": "^1.1"
     },
     "require-dev": {
