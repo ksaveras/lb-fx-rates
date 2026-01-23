@@ -19,10 +19,10 @@ jobs:
     name: Code Coverage Report
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1 # v2
         with:
           php-version: 8.3
           coverage: pcov
@@ -37,7 +37,7 @@ jobs:
 
       - if: ${{ github.event_name == 'pull_request' }}
         name: Download artifact
-        uses: dawidd6/action-download-artifact@v12
+        uses: dawidd6/action-download-artifact@0bd50d53a6d7fb5cb921e607957e9cc12b4ce392 # v12
         continue-on-error: true
         with:
           workflow: .github/workflows/coverage-report.yaml # this file
@@ -46,7 +46,7 @@ jobs:
           path: coverage/base
 
       - if: ${{ github.event_name != 'pull_request' }}
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
           name: coverage-report
           path: coverage/clover.xml
