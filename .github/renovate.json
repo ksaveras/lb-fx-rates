@@ -7,12 +7,28 @@
     "schedule:weekends",
     ":disableDependencyDashboard",
     ":semanticCommits",
+    ":prHourlyLimit4",
     "group:phpstan",
     "group:symfony",
     "group:unitTest",
     "preview:dockerCompose",
-    "preview:dockerVersions"
+    "preview:dockerVersions",
+    "helpers:pinGitHubActionDigests"
   ],
+  "dependencyDashboard": true,
   "labels": ["dependencies"],
-  "platformAutomerge": true
+  "platformAutomerge": true,
+  "packageRules": [
+    {
+      "matchManagers": ["composer"],
+      "matchDepTypes": ["require"],
+      "rangeStrategy": "bump",
+      "semanticCommitType": "fix"
+    },
+    {
+      "matchManagers": ["composer"],
+      "matchDepTypes": ["require-dev"],
+      "rangeStrategy": "bump",
+      "semanticCommitType": "chore"
+    }
 }
