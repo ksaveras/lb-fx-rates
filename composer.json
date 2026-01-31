@@ -28,7 +28,7 @@
         "phpstan/phpstan-phpunit": "^2.0.12",
         "phpunit/phpunit": "^12.5.7",
         "rector/rector": "^2.3.5",
-        "symfony/http-client": "^7.1"
+        "symfony/http-client": "^7.4.5"
     },
     "autoload": {
         "psr-4": {
