@@ -30,6 +30,10 @@
       "matchDepTypes": ["require-dev"],
       "rangeStrategy": "bump",
       "semanticCommitType": "chore"
+    },
+    {
+      "matchDepNames": ["php"],
+      "enabled": false
     }
   ]
 }
