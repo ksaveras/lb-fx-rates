@@ -53,7 +53,7 @@ jobs:
 
       - name: Coverage Report as Comment (Clover)
         if: ${{ github.event_name == 'pull_request' }}
-        uses: lucassabreu/comment-coverage-clover@main
+        uses: lucassabreu/comment-coverage-clover@92c9c9f0d9640bce558851c62295d99b13deacb3 # main
         with:
           file: coverage/clover.xml
           base-file: coverage/base/clover.xml
